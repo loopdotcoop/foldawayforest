@@ -17,44 +17,66 @@ FOLDF.Shape = class {
         this.id    = id
         this.sheet = sheet
 
-        this.createMesh(this.coords.basic, 100, 100)
+        this.createMesh(0x999999, this.coords.dev, 100, 100)
         this.mesh.rotation.x = Math.PI / 2
         this.mesh.castShadow = true
         this.mesh.receiveShadow = true
 
     }
 
-    createMesh (coords, width, height) {
+    createMesh (color, coords, width, height) {
 
-        //// Convert each coord-pair to a two-value point.
-        const points = []
-        for (let i=0,coord; i<coords.length; i+=2) {
-            points.push(
-                new THREE.Vector2(
-                      coords[i]   / width - 0.5 // center the origin
-                  , - coords[i+1] / width + 1   // reverse the Y-direction
-                )
-            )
+        //// Use cached Material, if available.
+        let material
+          , materialStr = color+''
+        if (! (material = this.cache.materials[materialStr]) ) {
+            material = this.cache.materials[materialStr] =
+                FOLDF.Shape.prototype.material = new THREE.MeshPhongMaterial({
+                    color:     color
+                  , wireframe: false
+                })
         }
+
+        //// Use cached Geometry, if available.
+        let geometry
+          , geometryStr = coords.join(',') // SHA-1 would be nicer :-)
+        if (! (geometry = this.cache.geometries[geometryStr]) ) {
+
+            //// Convert each coord-pair to a two-value point.
+            const points = []
+            for (let i=0,coord; i<coords.length; i+=2) {
+                points.push(
+                    new THREE.Vector2(
+                          coords[i]   / width - 0.5 // center the origin
+                      , - coords[i+1] / width + 1   // reverse the Y-direction
+                    )
+                )
+            }
+
+            //// Create and cache the Geometry.
+            geometry = this.cache.geometries[geometryStr] =
+                new THREE.ExtrudeGeometry(
+                    new THREE.Shape(points)
+                  , {
+                        amount          : 0.02
+                      , steps           : 1
+                      , material        : 0
+                      , extrudeMaterial : 1
+                      , bevelEnabled    : false
+                      , bevelThickness  : 0.1
+                      , bevelSize       : 0.2
+                      , bevelSegments   : 1
+                    }
+                )
+        }
+
 
         //// Extrude the shape and create the Mesh.
         this.mesh = new THREE.Mesh(
-            new THREE.ExtrudeGeometry( //@TODO use cached Geometry, if available
-                new THREE.Shape(points)
-              , {
-                    amount          : 0.02
-                  , steps           : 1
-                  , material        : 0
-                  , extrudeMaterial : 1
-                  , bevelEnabled    : false
-                  , bevelThickness  : 0.1
-                  , bevelSize       : 0.2
-                  , bevelSegments   : 1
-                }
-            )
+            geometry
           , new THREE.MultiMaterial([
-               this.material // face material
-             , this.material // edge material
+               material // face material
+             , material // edge material
             ])
         )
 
@@ -62,10 +84,11 @@ FOLDF.Shape = class {
 
 }
 
-FOLDF.Shape.prototype.material = new THREE.MeshPhongMaterial({
-    color:     0x999999
-  , wireframe: false
-})
+//// Initialise a cache with shared instance scope.
+FOLDF.Shape.prototype.cache = {
+    materials:  {}
+  , geometries: {}
+}
 
 
 FOLDF.Triangle = class extends FOLDF.Shape {

@@ -5,7 +5,7 @@
 //// Initialise the namespace, if it doesn’t already exist.
 const FOLDF = ROOT.FOLDF = ROOT.FOLDF || {}
 
-FOLDF.VERSION  = '0.0.6'
+FOLDF.VERSION  = '0.0.7'
 FOLDF.NAME     = 'Foldaway Forest'
 FOLDF.HOMEPAGE = 'http://foldawayforest.loop.coop/'
 
