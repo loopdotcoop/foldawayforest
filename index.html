@@ -17,7 +17,20 @@
   style[S]?p.style[S]('cssText',s):p[S]('style',s)),p.onclick=function(){d.body.
   removeChild(this)},d.body.appendChild(p)):alert(h)}}('position:fixed!importa'+
   'nt;position:absolute;display:block;top:40%;left:5%;width:90%;font-size:14px'+
-  ';padding:9px;margin-left:-9px;background:tan;color:#603;z-index:99999')</script>
+  ';padding:9px;margin-left:-9px;background:tan;color:#033;z-index:99')</script>
+
+  <link href="asset/foldaway-forest.css" rel="stylesheet">
+
+  <!-- Third party library -->
+  <script src="lib/jquery-3.1.1.min.js"></script>
+  <script src="lib/three.min.js"></script>
+  <script src="lib/three-orbitcontrols.js"></script>
+  <script src="lib/threex-windowresize.js"></script>
+
+  <!-- Main app and classes -->
+  <script src="src/main/App.js"></script>
+  <script src="src/main/Shape.js"></script>
+  <script src="src/main/Sheet.js"></script>
 
 </head>
 <body>
@@ -41,6 +54,13 @@
       https://github.com/loopdotcoop/foldawayforest</a>
   </p>
 
+  <!-- Init the app -->
+  <script>
+  if (! window.FOLDF) throw Error('App namespace not found')
+  FOLDF.init({
+
+  })
+  </script>
 
   <!-- End hiding from Internet Explorer 9 and below         --><!--<![endif]-->
 </body>

@@ -1,0 +1,28 @@
+/*
+//// Foldaway Forest //// 0.0.* //// May 2017 //// foldawayforest.loop.coop ////
+*/
+
+html {
+    background: #333;
+    color:      #eee;
+    font: 125% Arial, serif; /* 1rem = 20px */
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+a {
+    color: #0F9;
+    outline: none;
+    transition: color 0.3s;
+}
+a:hover,
+a:focus {
+    color: #CF9;
+}
