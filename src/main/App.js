@@ -5,7 +5,7 @@
 //// Initialise the namespace, if it doesn’t already exist.
 const FOLDF = ROOT.FOLDF = ROOT.FOLDF || {}
 
-FOLDF.VERSION  = '0.0.3'
+FOLDF.VERSION  = '0.0.4'
 FOLDF.NAME     = 'Foldaway Forest'
 FOLDF.HOMEPAGE = 'http://foldawayforest.loop.coop/'
 
@@ -15,8 +15,13 @@ FOLDF.apps     = []
 FOLDF.init = (config) => {
     console.log(`${FOLDF.NAME} ${FOLDF.VERSION}`)
 
-    if (! FOLDF.Sheet) throw Error('Class `Sheet` not found')
-    if (! FOLDF.Shape) throw Error('Class `Shape` not found')
+    //// Ensure all components have loaded.
+    if (! FOLDF.Scene)         throw Error('Class `Scene` not found')
+    if (! FOLDF.Shape)         throw Error('Class `Shape` not found')
+    if (! FOLDF.Sheet)         throw Error('Class `Sheet` not found')
+    if (! window.THREE)        throw Error('THREE not found')
+    if (! window.THREEx)       throw Error('THREEx not found')
+    if (! THREE.OrbitControls) throw Error('OrbitControls not found')
 
     const appId = FOLDF.apps.length
     FOLDF.apps[appId] = new FOLDF.App(config, appId)
@@ -45,6 +50,8 @@ FOLDF.App = class {
             this.sheets[sheetId] = new FOLDF.Sheet(config, sheetId, this)
         }
 
+        //// Initialise the 3D scene.
+        this.scene = new FOLDF.Scene(config, this)
     }
 
 }
