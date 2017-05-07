@@ -5,7 +5,7 @@
 //// Initialise the namespace, if it doesn’t already exist.
 const FOLDF = ROOT.FOLDF = ROOT.FOLDF || {}
 
-FOLDF.VERSION  = '0.0.7'
+FOLDF.VERSION  = '0.0.8'
 FOLDF.NAME     = 'Foldaway Forest'
 FOLDF.HOMEPAGE = 'http://foldawayforest.loop.coop/'
 
@@ -16,16 +16,24 @@ FOLDF.init = (config) => {
     console.log(`${FOLDF.NAME} ${FOLDF.VERSION}`)
 
     //// Ensure all components have loaded.
-    if (! FOLDF.Scene)         throw Error('Class `Scene` not found')
-    if (! FOLDF.Shape)         throw Error('Class `Shape` not found')
-    if (! FOLDF.Sheet)         throw Error('Class `Sheet` not found')
-    if (! window.THREE)        throw Error('THREE not found')
-    if (! window.THREEx)       throw Error('THREEx not found')
-    if (! THREE.OrbitControls) throw Error('OrbitControls not found')
+    if (! FOLDF.Dev)            throw Error('Class `Dev` not found')
+    if (! FOLDF.Scene)          throw Error('Class `Scene` not found')
+    if (! FOLDF.Shape)          throw Error('Class `Shape` not found')
+    if (! FOLDF.Sheet)          throw Error('Class `Sheet` not found')
+    if (! window.$)             throw Error('jQuery ($) not found')
+    if (! window.THREE)         throw Error('THREE not found')
+    if (! window.THREEx)        throw Error('THREEx not found')
+    if (! THREE.OrbitControls)  throw Error('OrbitControls not found')
 
+    //// Enable developer-mode, the first time `init()` is called.
+    if (! FOLDF.dev) FOLDF.dev = new FOLDF.Dev({ keypress:'§' }, this)
+
+    //// Create an App instance.
     const appId = FOLDF.apps.length
     FOLDF.apps[appId] = new FOLDF.App(config, appId)
     return FOLDF.apps[appId]
+
+
 }
 
 

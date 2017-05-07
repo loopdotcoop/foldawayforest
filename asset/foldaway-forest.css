@@ -11,19 +11,14 @@ body {
     margin: 0;
     overflow: hidden;
 }
-/*canvas {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-}*/
 
 nav {
     position: fixed;
     top: 1em;
     right: 1em;
+    text-align: right;
 }
+nav >span,
 nav >a {
     padding-left: 1em;
 }
@@ -36,4 +31,12 @@ a {
 a:hover,
 a:focus {
     color: #CF9;
+}
+
+/* DEVELOPER */
+.show-dev {
+    visibility: hidden;
+}
+body.dev span.show-dev {
+    visibility: visible;
 }
