@@ -22,11 +22,11 @@
 </head>
 <body>
 
-  <!-- Upgrade message for Internet Explorer 9 and below   --><!--[if lte IE 9]>
-  <h2>&nbsp; Upgrade to a modern browser</h2><![endif]-->
-  <!-- Begin hiding from IE 9 and below         --><!--[if gt IE 9 | !IE ]><!-->
-  <script>if(/*@cc_on!@*/false)document.getElementById('body').innerHTML=
-  '<h2>&nbsp; Upgrade to a modern browser</h2>'</script>
+  <!-- Upgrade message for Internet Explorer 9 and below -->  <!--[if lte IE 9]>
+  <h2>Upgrade to a <a href="//goo.gl/KpAuN1">modern browser<a/></h2><![endif]-->
+  <!-- Begin hiding from IE 9 and below -->        <!--[if gt IE 9 | !IE ]><!-->
+  <script>if(/Trident\//.test(navigator.userAgent))document.write('<h2>Upgrade '
+  +'to a <a href="//goo.gl/KpAuN1">modern browser<a/></h2><!--')//IE10+</script>
 
   <h1>Foldaway Forest 0.0.*</h1>
   <h2>Strange paper trees unfurl in 3D</h2>
