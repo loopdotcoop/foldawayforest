@@ -5,11 +5,12 @@
 //// Initialise the namespace, if it doesn’t already exist.
 const FOLDF = ROOT.FOLDF = ROOT.FOLDF || {}
 
-FOLDF.VERSION  = '0.0.8'
+FOLDF.VERSION  = '0.0.10'
 FOLDF.NAME     = 'Foldaway Forest'
 FOLDF.HOMEPAGE = 'http://foldawayforest.loop.coop/'
 
 FOLDF.apps     = []
+
 
 //// Adds an instance of the app to the `apps` array.
 FOLDF.init = (config) => {
@@ -62,6 +63,22 @@ FOLDF.App = class {
             const sheetId = this.sheets.length
             this.sheets[sheetId] = new FOLDF.Sheet(config, sheetId, this)
         }
+
+    }
+
+
+    //// Simulates one minute of app-time.
+    simulate (now) {
+
+        //// Occasionally raise a Triangle.
+        for (let i=0, shape; shape=this.shapes[i++];) {
+            if (
+                0.995 < Math.random() // one in two hundred
+             && ! shape.isRaised      // already completed a raise
+             && ! this.raiseTarget    // is part-way through raising
+            ) shape.raise()
+        }
+
 
     }
 

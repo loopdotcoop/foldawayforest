@@ -69,16 +69,32 @@ FOLDF.Scene = class {
         //// Create mouse controls (rotate, pan and zoom).
         this.controls = new THREE.OrbitControls(this.camera)
 
-        //// Begin rendering the scene.
-        this.render()
+        //// Record the number of milliseconds past the most recent second, and
+        //// begin rendering the scene.
+        requestAnimationFrame(now => {this.then = now % 1000; this.render(now)})
     }
 
 
-    render () {
-        requestAnimationFrame( () => this.render() )
+    render (now) {
+        requestAnimationFrame( now => this.render(now) )
         if (FOLDF.dev.enabled) FOLDF.dev.stats.begin()
 
-        this.box.rotation.y += 0.01
+        //// Turn the box once every ten seconds.
+        this.box.rotation.y = Math.PI * 0.0002 * now % 10000
+
+        //// Check whether a second has elapsed since the previous `simulate()`.
+        const ms = now % 1000
+        if (ms < this.then) {
+            this.app.simulate(now)
+        }
+        this.then = ms
+
+        //// Animate any Triangles which are mid-raise.
+        for (let i=0, shape; shape=this.app.shapes[i++];)
+            if (shape.raiseTarget) shape.animateRaise()
+
+
+        //// Render the Scene.
         this.renderer.render(this.scene, this.camera)
 
         if (FOLDF.dev.enabled) {

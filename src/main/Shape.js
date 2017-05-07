@@ -31,17 +31,36 @@ FOLDF.Shape = class {
         this.sheet.app.scene.scene.add(this.mesh)
     }
 
+
+    raise () {
+        this.raiseTarget = this.z % 2 ? 0.5 : Math.PI - 0.5
+        // this.mesh.rotation.x = (this.mesh.rotation.x + this.raiseTarget) / 2
+    }
+
+
+    animateRaise () {
+        this.mesh.rotation.x = (this.mesh.rotation.x * 7 + this.raiseTarget) / 8
+        const diff = this.mesh.rotation.x - this.raiseTarget
+        const isRev = this.z % 2 // reversed
+        if ( (isRev && 0.01 > diff) || (! isRev && -0.01 < diff) ) {
+            this.mesh.rotation.x = this.raiseTarget
+            this.raiseTarget = false
+            this.isRaised = true
+        }
+    }
+
+
     setProperties () {
         this.mesh.rotation.x = Math.PI / 2
         this.mesh.castShadow = true
         this.mesh.receiveShadow = true
 
         if (this.z % 2) {
-            this.mesh.position.x = this.x
+            this.mesh.position.x = this.x + ((this.z+1) % 4 ? 0 : 0.5)
             this.mesh.position.z = this.z * (0.433)
         } else {
             this.mesh.rotation.z = Math.PI
-            this.mesh.position.x = this.x + 0.5
+            this.mesh.position.x = this.x + 0.5 + (this.z % 4 ? 0 : 0.5)
             this.mesh.position.z = (this.z + 1) * (0.433)
         }
     }
@@ -114,6 +133,7 @@ FOLDF.Shape = class {
 
 
     updateGeometry (coords, width, height) {
+        const oldRotX = this.mesh.rotation.x
 
         //// Use cached Geometry, if available.
         this.setGeometry(coords, width, height)
@@ -132,6 +152,7 @@ FOLDF.Shape = class {
 
         //// Set Mesh properties.
         this.setProperties()
+        this.mesh.rotation.x = oldRotX // raised Triangles stay raised
 
         //// Restore the updated Mesh to the Scene.
         this.sheet.app.scene.scene.add(this.mesh)
