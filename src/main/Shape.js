@@ -17,30 +17,51 @@ FOLDF.Shape = class {
         this.id    = id
         this.sheet = sheet
 
-        this.createMesh(0x999999, this.coords.dev, 100, 100)
+        //// Create the mesh.
+        this.createMesh(
+            0x999999
+          , FOLDF.dev.enabled ? this.coords.dev : this.coords.basic
+          , 100, 100
+        )
+
+        //// Set Mesh properties.
+        this.setProperties()
+
+        //// Add the new Mesh to the Scene.
+        this.sheet.app.scene.scene.add(this.mesh)
+    }
+
+    setProperties () {
         this.mesh.rotation.x = Math.PI / 2
         this.mesh.castShadow = true
         this.mesh.receiveShadow = true
 
+        if (this.z % 2) {
+            this.mesh.position.x = this.x
+            this.mesh.position.z = this.z * (0.433)
+        } else {
+            this.mesh.rotation.z = Math.PI
+            this.mesh.position.x = this.x + 0.5
+            this.mesh.position.z = (this.z + 1) * (0.433)
+        }
     }
 
-    createMesh (color, coords, width, height) {
 
-        //// Use cached Material, if available.
-        let material
-          , materialStr = color+''
-        if (! (material = this.cache.materials[materialStr]) ) {
-            material = this.cache.materials[materialStr] =
+    setMaterial (color) {
+        let materialStr = color+''
+        if (! (this.material = this.cache.materials[materialStr]) ) {
+            this.material = this.cache.materials[materialStr] =
                 FOLDF.Shape.prototype.material = new THREE.MeshPhongMaterial({
                     color:     color
                   , wireframe: false
                 })
         }
+    }
 
-        //// Use cached Geometry, if available.
-        let geometry
-          , geometryStr = coords.join(',') // SHA-1 would be nicer :-)
-        if (! (geometry = this.cache.geometries[geometryStr]) ) {
+
+    setGeometry (coords, width, height) {
+        let geometryStr = coords.join(',') // SHA-1 would be nicer :-)
+        if (! (this.geometry = this.cache.geometries[geometryStr]) ) {
 
             //// Convert each coord-pair to a two-value point.
             const points = []
@@ -53,8 +74,8 @@ FOLDF.Shape = class {
                 )
             }
 
-            //// Create and cache the Geometry.
-            geometry = this.cache.geometries[geometryStr] =
+            //// Extrude and cache the Geometry.
+            this.geometry = this.cache.geometries[geometryStr] =
                 new THREE.ExtrudeGeometry(
                     new THREE.Shape(points)
                   , {
@@ -69,18 +90,54 @@ FOLDF.Shape = class {
                     }
                 )
         }
+    }
 
 
-        //// Extrude the shape and create the Mesh.
+    createMesh (color, coords, width, height) {
+
+        //// Use cached Material, if available.
+        this.setMaterial(color)
+
+        //// Use cached Geometry, if available.
+        this.setGeometry(coords, width, height)
+
+        //// Create the Mesh.
         this.mesh = new THREE.Mesh(
-            geometry
+            this.geometry
           , new THREE.MultiMaterial([
-               material // face material
-             , material // edge material
+               this.material // face material
+             , this.material // edge material
             ])
         )
 
     }
+
+
+    updateGeometry (coords, width, height) {
+
+        //// Use cached Geometry, if available.
+        this.setGeometry(coords, width, height)
+
+        //// Remove the Mesh from the Scene.
+        this.sheet.app.scene.scene.remove(this.mesh) //@TODO dispose of Mesh?
+
+        //// Recreate the Mesh.
+        this.mesh = new THREE.Mesh(
+            this.geometry
+          , new THREE.MultiMaterial([
+               this.material // face material
+             , this.material // edge material
+            ])
+        )
+
+        //// Set Mesh properties.
+        this.setProperties()
+
+        //// Restore the updated Mesh to the Scene.
+        this.sheet.app.scene.scene.add(this.mesh)
+
+    }
+
 
 }
 

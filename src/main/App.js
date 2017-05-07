@@ -22,8 +22,11 @@ FOLDF.init = (config) => {
     if (! FOLDF.Sheet)          throw Error('Class `Sheet` not found')
     if (! window.$)             throw Error('jQuery ($) not found')
     if (! window.THREE)         throw Error('THREE not found')
+    if (! THREE.OrbitControls)  throw Error('THREE.OrbitControls not found')
+    if (! window.Stats)         throw Error('Stats not found')
     if (! window.THREEx)        throw Error('THREEx not found')
-    if (! THREE.OrbitControls)  throw Error('OrbitControls not found')
+    if (! THREEx.WindowResize)  throw Error('THREEx.WindowResize not found')
+    if (! THREEx.RendererStats) throw Error('THREEx.RendererStats not found')
 
     //// Enable developer-mode, the first time `init()` is called.
     if (! FOLDF.dev) FOLDF.dev = new FOLDF.Dev({ keypress:'§' }, this)
@@ -32,7 +35,6 @@ FOLDF.init = (config) => {
     const appId = FOLDF.apps.length
     FOLDF.apps[appId] = new FOLDF.App(config, appId)
     return FOLDF.apps[appId]
-
 
 }
 
@@ -60,6 +62,7 @@ FOLDF.App = class {
             const sheetId = this.sheets.length
             this.sheets[sheetId] = new FOLDF.Sheet(config, sheetId, this)
         }
+
     }
 
 }

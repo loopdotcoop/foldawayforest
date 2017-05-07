@@ -76,8 +76,15 @@ FOLDF.Scene = class {
 
     render () {
         requestAnimationFrame( () => this.render() )
+        if (FOLDF.dev.enabled) FOLDF.dev.stats.begin()
+
         this.box.rotation.y += 0.01
         this.renderer.render(this.scene, this.camera)
+
+        if (FOLDF.dev.enabled) {
+            FOLDF.dev.stats.end()
+            FOLDF.dev.rendererStats.update(this.renderer)
+        }
     }
 
 }

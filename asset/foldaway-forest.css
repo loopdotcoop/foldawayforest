@@ -34,9 +34,21 @@ a:focus {
 }
 
 /* DEVELOPER */
-.show-dev {
+.dev-show {
     visibility: hidden;
 }
-body.dev span.show-dev {
+body.dev .dev-show {
     visibility: visible;
+}
+#dev-stats {
+    transform: scale(2);
+    top:  2.5em!important;
+    left: 3em!important;
+}
+#dev-rendererstats {
+    position: fixed;
+    transform: scale(2);
+    transform-origin: bottom left;
+    bottom: 1em;
+    left: 1em;
 }

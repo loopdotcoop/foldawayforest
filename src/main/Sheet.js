@@ -20,27 +20,30 @@ FOLDF.Sheet = class {
         //// Containers for Shapes.
         this.shapes = []
 
-
         //// Create the Shape instances. References are kept in the App’s
         //// `shapes` array (for re-using THREE resources after a Sheet is
         //// deleted), and also in this Shape’s local `shapes` array.
         for (let x=-3; x<=3; x++) {
             for (let z=-5; z<3; z++) {
+                config.x = x
+                config.z = z
                 const shapeId = this.app.shapes.length
                 const shape = new FOLDF.EquilateralTriangle(config, shapeId, this)
                 this.app.shapes[shapeId] = shape
                 this.shapes[shapeId] = shape
-                this.app.scene.scene.add(shape.mesh)
-                if (z % 2) {
-                    shape.mesh.position.x = x
-                    shape.mesh.position.z = z * (0.433)
-                } else {
-                    shape.mesh.rotation.z = Math.PI
-                    shape.mesh.position.x = x + 0.5
-                    shape.mesh.position.z = (z + 1) * (0.433)
-                }
             }
         }
+
+        //// Deal with developer-mode being enabled or disabled.
+        $(window).on('FOLDF-toggle-dev', e => {
+            for (let i=0,shape; shape=this.shapes[i++];) {
+                shape.updateGeometry(
+                    FOLDF.dev.enabled ? shape.coords.dev : shape.coords.basic
+                  , 100, 100
+                )
+            }
+        })
+
     }
 
 }
