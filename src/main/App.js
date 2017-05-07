@@ -5,7 +5,7 @@
 //// Initialise the namespace, if it doesn’t already exist.
 const FOLDF = ROOT.FOLDF = ROOT.FOLDF || {}
 
-FOLDF.VERSION  = '0.0.5'
+FOLDF.VERSION  = '0.0.6'
 FOLDF.NAME     = 'Foldaway Forest'
 FOLDF.HOMEPAGE = 'http://foldawayforest.loop.coop/'
 
@@ -44,14 +44,14 @@ FOLDF.App = class {
         this.sheets = []
         this.shapes = []
 
+        //// Initialise the 3D scene.
+        this.scene = new FOLDF.Scene(config, this)
+
         //// Create the Sheet instances - these will create the Shape instances.
         for (let sheetId=0; sheetId<(config.sheetTally||1); sheetId++) {
             const sheetId = this.sheets.length
             this.sheets[sheetId] = new FOLDF.Sheet(config, sheetId, this)
         }
-
-        //// Initialise the 3D scene.
-        this.scene = new FOLDF.Scene(config, this)
     }
 
 }

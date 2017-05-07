@@ -7,15 +7,16 @@ html {
     color:      #eee;
     font: 125% Arial, serif; /* 1rem = 20px */
 }
-
-canvas {
-    position: fixed;
+body {
+    margin: 0;
+}
+/*canvas {
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: -1;
-}
+}*/
 
 nav {
     position: fixed;

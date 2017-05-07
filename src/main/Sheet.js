@@ -24,11 +24,13 @@ FOLDF.Sheet = class {
         //// Create the Shape instances. References are kept in the App’s
         //// `shapes` array (for re-using THREE resources after a Sheet is
         //// deleted), and also in this Shape’s local `shapes` array.
-        for (let i=0; i<(config.shapeTally||24); i++) {
+        for (let i=0; i<(config.shapeTally||1); i++) {
             const shapeId = this.app.shapes.length
             const shape = new FOLDF.EquilateralTriangle(config, shapeId, this)
             this.app.shapes[shapeId] = shape
             this.shapes[shapeId] = shape
+            this.app.scene.scene.add(shape.mesh)
+
         }
     }
 

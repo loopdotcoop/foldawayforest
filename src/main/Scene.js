@@ -68,7 +68,6 @@ FOLDF.Scene = class {
 
         //// Create mouse controls (rotate, pan and zoom).
         this.controls = new THREE.OrbitControls(this.camera)
-        this.controls.target = new THREE.Vector3(0, 0, -2)
 
         //// Begin rendering the scene.
         this.render()
