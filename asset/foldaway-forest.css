@@ -17,6 +17,15 @@ canvas {
     z-index: -1;
 }
 
+nav {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+}
+nav >a {
+    padding-left: 1em;
+}
+
 a {
     color: #0F9;
     outline: none;

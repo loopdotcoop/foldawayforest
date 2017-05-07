@@ -35,6 +35,13 @@ FOLDF.EquilateralTriangle = class extends FOLDF.Triangle {
 
     constructor (config, id, sheet) {
         super(config, id, sheet)
+
+        this.points = {
+            basic: [ 0,100,  50,13.396,  100,100 ]
+          , dev:   [ 93.977,90, 50,13.83, 6.023,90, 10,90, 10,99.566, 90,99.566, 90,90 ]
+        }
+
+        // sheet.scene.add()
     }
 
 }

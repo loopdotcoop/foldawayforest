@@ -2,7 +2,7 @@
 
 Strange paper trees unfurl in 3D
 
-Sandbox:  
+Homepage:  
 http://foldawayforest.loop.coop/
 
 GitHub:  
